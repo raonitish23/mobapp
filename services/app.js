@@ -30,7 +30,8 @@ const createUser = async (req, res, next) => {
             return res.status(422).json({
                 'code': 'REQUIRED_FIELD_MISSING',
                 'description': 'user email is required',
-                'field': 'user_email'
+                'field': 'user_email',
+                "status": false
             });
         }
 
@@ -38,7 +39,8 @@ const createUser = async (req, res, next) => {
             return res.status(422).json({
                 'code': 'REQUIRED_FIELD_MISSING',
                 'description': 'uid required',
-                'field': 'uid'
+                'field': 'uid',
+                "status": false
             });
         }
 
@@ -53,13 +55,15 @@ const createUser = async (req, res, next) => {
         if (user_data > 0) {
             return res.status(404).json({
                 'description': 'Uid is already registered',
+                "status": false
             });
         }
         let newUser = await User.create(temp);
 
         return res.status(201).json({
             'message': 'new User created successfully',
-            'data': newUser
+            'data': newUser,
+            "status": true
         });
 
 
@@ -67,7 +71,8 @@ const createUser = async (req, res, next) => {
         console.error("exception" + error)
         return res.status(500).json({
             'code': 'SERVER_ERROR',
-            'description': 'something went wrong, Please try again'
+            'description': 'something went wrong, Please try again',
+            "status": false
         });
     }
 }
@@ -84,7 +89,8 @@ const userLogin = async (req, res, next) => {
             return res.status(422).json({
                 'code': 'REQUIRED_FIELD_MISSING',
                 'description': 'Uid is required',
-                'field': 'uid'
+                'field': 'uid',
+                "status": false
             });
         }
 
@@ -94,11 +100,13 @@ const userLogin = async (req, res, next) => {
         if (user_data === undefined || user_data === '' || user_data === null) {
             return res.status(404).json({
                 'description': 'User is not registered',
+                "status": false
             });
         }
 
         return res.status(200).json({
             'message': 'Login successfully',
+            "status": true
 
         });
 
@@ -106,7 +114,8 @@ const userLogin = async (req, res, next) => {
         console.error(error)
         return res.status(500).json({
             'code': 'SERVER_ERROR',
-            'description': 'something went wrong, Please try again'
+            'description': 'something went wrong, Please try again',
+            "status": false
         });
     }
 }
@@ -265,14 +274,16 @@ const updateUserProfile = async (req, res, next) => {
             return res.status(422).json({
                 'code': 'REQUIRED_FIELD_MISSING',
                 'description': 'Name is required',
-                'field': 'name'
+                'field': 'name',
+                "status": false
             });
         }
         if (uid === undefined || uid === '') {
             return res.status(422).json({
                 'code': 'REQUIRED_FIELD_MISSING',
                 'description': 'U id is required',
-                'field': 'uid'
+                'field': 'uid',
+                "status": false
             });
         }
 
@@ -280,7 +291,8 @@ const updateUserProfile = async (req, res, next) => {
             return res.status(422).json({
                 'code': 'REQUIRED_FIELD_MISSING',
                 'description': 'user email is required',
-                'field': 'user_email'
+                'field': 'user_email',
+                "status": false
             });
         }
 
@@ -288,7 +300,8 @@ const updateUserProfile = async (req, res, next) => {
             return res.status(422).json({
                 'code': 'REQUIRED_FIELD_MISSING',
                 'description': 'Gender is required',
-                'field': 'gender'
+                'field': 'gender',
+                "status": false
             });
         }
 
@@ -296,7 +309,8 @@ const updateUserProfile = async (req, res, next) => {
             return res.status(422).json({
                 'code': 'REQUIRED_FIELD_MISSING',
                 'description': 'Motivates is required',
-                'field': 'motivates'
+                'field': 'motivates',
+                "status": false
             });
         }
         gender = gender.toUpperCase();
@@ -307,6 +321,7 @@ const updateUserProfile = async (req, res, next) => {
         if (User_data.length === 0) {
             return res.status(404).json({
                 'description': 'Uid is not registered',
+                "status": false
             });
         }
 
@@ -322,7 +337,8 @@ const updateUserProfile = async (req, res, next) => {
         })
 
         return res.status(200).json({
-            'message': 'Profile updated successfully'
+            'message': 'Profile updated successfully',
+            "status": true
         });
 
 
@@ -330,7 +346,8 @@ const updateUserProfile = async (req, res, next) => {
         console.error(error)
         return res.status(500).json({
             'code': 'SERVER_ERROR',
-            'description': 'something went wrong, Please try again'
+            'description': 'something went wrong, Please try again',
+            "status": false
         });
     }
 }
@@ -345,7 +362,8 @@ const getUserProfile = async (req, res, next) => {
             return res.status(422).json({
                 'code': 'REQUIRED_FIELD_MISSING',
                 'description': 'U id is required',
-                'field': 'uid'
+                'field': 'uid',
+                "status": false
             });
         }
 
@@ -355,12 +373,14 @@ const getUserProfile = async (req, res, next) => {
         if (User_data) {
             return res.status(200).json({
                 'message': 'Profile fetched successfully',
+                "status": false,
                 "data":User_data
             });
         }
 
         return res.status(404).json({
             'description': 'Uid is not registered',
+            "status": false
         });
 
 
@@ -369,7 +389,8 @@ const getUserProfile = async (req, res, next) => {
         console.error(error)
         return res.status(500).json({
             'code': 'SERVER_ERROR',
-            'description': 'something went wrong, Please try again'
+            'description': 'something went wrong, Please try again',
+            "status": false
         });
     }
 }
