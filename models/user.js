@@ -7,11 +7,17 @@ let User = new Schema({
   user_email: {
     type: String,
   },
+  uid: {
+    type: String,
+  },
   name: {
     type: String,
   },
   dob: {
     type: Date,
+  },
+  age: {
+    type: "Number",
   },
   gender: {
     type: String,
@@ -43,6 +49,9 @@ let User = new Schema({
   },
   political_preference: {
     type: String,
+  },
+  motivates: {
+    type: Array,
   }
 }, {
   timestamps: true

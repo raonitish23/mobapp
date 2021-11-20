@@ -1,6 +1,6 @@
 let localConfig = {
   hostname: 'localhost',
-  port: process.env.PORT || 8080
+  port: process.env.PORT || 3000
 };
 
 module.exports = localConfig;

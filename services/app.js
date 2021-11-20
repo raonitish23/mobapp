@@ -23,7 +23,7 @@ const createUser = async (req, res, next) => {
 
         let {
             user_email,
-            password
+            uid
         } = req.body
 
         if (user_email === undefined || user_email === '') {
@@ -34,26 +34,25 @@ const createUser = async (req, res, next) => {
             });
         }
 
-        if (password === undefined || password === '') {
+        if (uid === undefined || uid === '') {
             return res.status(422).json({
                 'code': 'REQUIRED_FIELD_MISSING',
-                'description': 'Password is required',
-                'field': 'password'
+                'description': 'uid required',
+                'field': 'uid'
             });
         }
 
         user_email = user_email.toLowerCase();
         user_email = user_email.trim()
-        password = utils.getBcryptPassword(password)
         const temp = {
             user_email,
-            password
+            uid
         }
-        let user_data = await User.find({ user_email: user_email }).countDocuments()
+        let user_data = await User.find({ uid: uid }).countDocuments()
 
         if (user_data > 0) {
             return res.status(404).json({
-                'description': 'User email is already registered',
+                'description': 'Uid is already registered',
             });
         }
         let newUser = await User.create(temp);
@@ -78,15 +77,15 @@ const userLogin = async (req, res, next) => {
     try {
 
         let {
-            password,
+            uid,
             user_email
         } = req.body;
 
-        if (password === undefined || password === '') {
+        if (uid === undefined || uid === '') {
             return res.status(422).json({
                 'code': 'REQUIRED_FIELD_MISSING',
-                'description': 'Password is required',
-                'field': 'password'
+                'description': 'Uid is required',
+                'field': 'uid'
             });
         }
 
@@ -105,20 +104,12 @@ const userLogin = async (req, res, next) => {
             });
         }
         user_email = user_email.toLowerCase();
-        let user_data = await User.findOne({ user_email: user_email })
+        let user_data = await User.findOne({ uid: uid })
 
         if (user_data === undefined || user_data === '' || user_data === null) {
             return res.status(404).json({
-                'description': 'User Email is not registered',
+                'description': 'User is not registered',
             });
-        }
-
-
-        if (!utils.comparePassword(password, user_data.password)) {
-            return res.status(401).json({
-                status: false,
-                message: 'Please enter the valid password.',
-            })
         }
 
         return res.status(200).json({
@@ -242,7 +233,7 @@ const updatePassword = async (req, res, next) => {
         })
         if (User_data.length === 0) {
             return res.status(404).json({
-                'description': 'User email is not registered',
+                'description': 'Uid is not registered',
             });
         }
 
@@ -272,11 +263,137 @@ const updatePassword = async (req, res, next) => {
     }
 }
 
+const updateUserProfile = async (req, res, next) => {
+    try {
 
+        let {
+            name,
+            age,
+            gender,
+            motivates,
+            uid
+        } = req.body
+
+
+
+        if (name === undefined || name === '') {
+            return res.status(422).json({
+                'code': 'REQUIRED_FIELD_MISSING',
+                'description': 'Name is required',
+                'field': 'name'
+            });
+        }
+        if (uid === undefined || uid === '') {
+            return res.status(422).json({
+                'code': 'REQUIRED_FIELD_MISSING',
+                'description': 'U id is required',
+                'field': 'uid'
+            });
+        }
+
+        if (age === undefined || age === '') {
+            return res.status(422).json({
+                'code': 'REQUIRED_FIELD_MISSING',
+                'description': 'user email is required',
+                'field': 'user_email'
+            });
+        }
+
+        if (gender === undefined || gender === '') {
+            return res.status(422).json({
+                'code': 'REQUIRED_FIELD_MISSING',
+                'description': 'Gender is required',
+                'field': 'gender'
+            });
+        }
+
+        if (motivates === undefined || motivates === '') {
+            return res.status(422).json({
+                'code': 'REQUIRED_FIELD_MISSING',
+                'description': 'Motivates is required',
+                'field': 'motivates'
+            });
+        }
+        gender = gender.toUpperCase();
+
+        let User_data = await User.find({
+            uid: uid,
+        })
+        if (User_data.length === 0) {
+            return res.status(404).json({
+                'description': 'Uid is not registered',
+            });
+        }
+
+        let update_profile = await User.updateOne({
+            uid: uid,
+        }, {
+            $set: {
+                name,
+                age,
+                gender,
+                motivates
+            },
+        })
+
+        return res.status(200).json({
+            'message': 'Profile updated successfully'
+        });
+
+
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            'code': 'SERVER_ERROR',
+            'description': 'something went wrong, Please try again'
+        });
+    }
+}
+
+const getUserProfile = async (req, res, next) => {
+    try {
+
+        let {
+            uid
+        } = req.body
+        if (uid === undefined || uid === '') {
+            return res.status(422).json({
+                'code': 'REQUIRED_FIELD_MISSING',
+                'description': 'U id is required',
+                'field': 'uid'
+            });
+        }
+
+        let User_data = await User.findOne({
+            uid: uid,
+        })
+        if (User_data) {
+            return res.status(200).json({
+                'message': 'Profile fetched successfully',
+                "data":User_data
+            });
+        }
+
+        return res.status(404).json({
+            'description': 'Uid is not registered',
+        });
+
+
+
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            'code': 'SERVER_ERROR',
+            'description': 'something went wrong, Please try again'
+        });
+    }
+}
 
 module.exports = {
     createUser,
     userLogin,
     forgotPassword,
-    updatePassword
+    updatePassword,
+    updateUserProfile,
+    getUserProfile
 }
