@@ -373,7 +373,7 @@ const getUserProfile = async (req, res, next) => {
         if (User_data) {
             return res.status(200).json({
                 'message': 'Profile fetched successfully',
-                "status": false,
+                "status": true,
                 "data":User_data
             });
         }
