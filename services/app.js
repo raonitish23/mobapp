@@ -77,8 +77,7 @@ const userLogin = async (req, res, next) => {
     try {
 
         let {
-            uid,
-            user_email
+            uid
         } = req.body;
 
         if (uid === undefined || uid === '') {
@@ -89,21 +88,7 @@ const userLogin = async (req, res, next) => {
             });
         }
 
-        if (user_email === undefined || user_email === '') {
-            return res.status(422).json({
-                'code': 'REQUIRED_FIELD_MISSING',
-                'description': 'User Email is required',
-                'field': 'user_email'
-            });
-        }
-        if (!MailChecker.isValid(user_email)) {
-            return res.status(422).json({
-                'code': 'REQUIRED_FIELD_MISSING',
-                'description': 'user email is InValid',
-                'field': 'user_email'
-            });
-        }
-        user_email = user_email.toLowerCase();
+
         let user_data = await User.findOne({ uid: uid })
 
         if (user_data === undefined || user_data === '' || user_data === null) {
