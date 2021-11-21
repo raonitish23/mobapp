@@ -22,18 +22,10 @@ const createUser = async (req, res, next) => {
     try {
 
         let {
-            user_email,
             uid
         } = req.body
 
-        if (user_email === undefined || user_email === '') {
-            return res.status(422).json({
-                'code': 'REQUIRED_FIELD_MISSING',
-                'description': 'user email is required',
-                'field': 'user_email',
-                "status": false
-            });
-        }
+
 
         if (uid === undefined || uid === '') {
             return res.status(422).json({
@@ -44,10 +36,8 @@ const createUser = async (req, res, next) => {
             });
         }
 
-        user_email = user_email.toLowerCase();
-        user_email = user_email.trim()
+
         const temp = {
-            user_email,
             uid
         }
         let user_data = await User.find({ uid: uid }).countDocuments()
