@@ -247,7 +247,7 @@ const updatePassword = async (req, res, next) => {
     }
 }
 
-const updateUserProfile = async (req, res, next) => {
+const updateSignupUser = async (req, res, next) => {
     try {
 
         let {
@@ -390,6 +390,6 @@ module.exports = {
     userLogin,
     forgotPassword,
     updatePassword,
-    updateUserProfile,
+    updateSignupUser,
     getUserProfile
 }

@@ -8,7 +8,7 @@ router.post('/user-login', appService.userLogin);
 router.post('/update-password', appService.updatePassword);
 router.post('/forgot-password', appService.forgotPassword);
 router.get('/test', appService.forgotPassword);
-router.post('/update-user', appService.updateUserProfile);
+router.post('/update-signup-user', appService.updateSignupUser);
 router.post('/get-user-profile', appService.getUserProfile);
 
 
