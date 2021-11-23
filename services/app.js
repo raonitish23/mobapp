@@ -22,7 +22,8 @@ const createUser = async (req, res, next) => {
     try {
 
         let {
-            uid
+            uid,
+            user_email
         } = req.body
 
 
@@ -38,7 +39,8 @@ const createUser = async (req, res, next) => {
 
 
         const temp = {
-            uid
+            uid,
+            user_email
         }
         let user_data = await User.find({ uid: uid }).countDocuments()
 
@@ -255,7 +257,8 @@ const updateSignupUser = async (req, res, next) => {
             age,
             gender,
             motivates,
-            uid
+            uid,
+            user_email
         } = req.body
 
 
@@ -322,7 +325,8 @@ const updateSignupUser = async (req, res, next) => {
                 name,
                 age,
                 gender,
-                motivates
+                motivates,
+                user_email
             },
         })
 
