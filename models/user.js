@@ -6,6 +6,7 @@ let Schema = mongoose.Schema;
 let User = new Schema({
   user_email: {
     type: String,
+    default: "Not Updated"
   },
   uid: {
     type: String,
