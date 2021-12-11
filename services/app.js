@@ -388,12 +388,41 @@ const getUserProfile = async (req, res, next) => {
         });
     }
 }
+const download = async (req, res, next) => {
 
+    try {
+
+
+        var file = req.params.file;
+        var fileLocation = path.join('./', file);
+
+        console.debug(fileLocation);
+        if (fs.existsSync(fileLocation)) {
+            console.debug("File exists.")
+            res.download(fileLocation, file);
+        } else {
+            console.error("File does not exist.")
+            return res.status(404).json({
+                'code': 'NOT_FOUND',
+                'description': "Image Not Accessible or Doesn't Exist"
+            });
+        }
+
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({
+            status: false,
+            code: 'SERVER_ERROR',
+            message: 'Something went wrong, Please try again',
+        })
+    }
+}
 module.exports = {
     createUser,
     userLogin,
     forgotPassword,
     updatePassword,
     updateSignupUser,
-    getUserProfile
+    getUserProfile,
+    download
 }

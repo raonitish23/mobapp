@@ -14,7 +14,7 @@ const options = {
 };
 
 let url = `mongodb+srv://admin:admin123@cluster0.h0mb8.mongodb.net/mobapp?retryWrites=true&w=majority`;
-
+// let url = 'mongodb://127.0.0.1:27017/mobapp'
 
 module.exports = {
   'secret': '',
